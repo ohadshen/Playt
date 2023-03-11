@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,7 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 101;
 
     private Button LogOutButton;
+    private TextView carDailyNumber;
     private String currentPhotoPath;
+
+    public static String getDailyNumber() {
+        return "11-XXX-43";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         LogOutButton = findViewById(R.id.logoutBtn);
+        carDailyNumber = findViewById(R.id.carDailyNumber);
+
+        carDailyNumber.setText(getDailyNumber());
 
         // Set on Click Listener on Sign-in button
         LogOutButton.setOnClickListener(new View.OnClickListener() {

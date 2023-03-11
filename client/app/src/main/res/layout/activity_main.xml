@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/carDailyNumber"
         android:layout_width="287dp"
         android:layout_height="78dp"
         android:layout_x="61dp"
