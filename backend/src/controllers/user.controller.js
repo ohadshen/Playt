@@ -26,6 +26,15 @@ const createUser = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    try {
+        res.json(await userService.updateUser(req.body.user));
+    } catch(err) {
+        sendError('error updating User', err, res);
+    }
+}
+
 export { getAllUsers,
         getUserById,    
-        createUser };
+        createUser,
+        updateUser };

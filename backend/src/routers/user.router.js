@@ -6,11 +6,10 @@ const router = Router();
 router.route("/")
     .get(getAllUsers)
     .post(createUser)
+    .put(updateUser)
 
 router.route("/:id")
     .get(getUserById)
-    .put(updateUser)
-
 
 export default router;
   
