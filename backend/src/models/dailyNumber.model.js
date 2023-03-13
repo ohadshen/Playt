@@ -6,7 +6,7 @@ const DailyNumberSchema = new Schema({
         required: true,
     },
     number: {
-        type: String,
+        type: Array,
         required: true,
     }
 });

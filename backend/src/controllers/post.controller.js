@@ -19,7 +19,7 @@ const getPostById = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        res.json(await postService.createPost(req.body.post));
+        res.json(await postService.createPost(req.body));
     } catch(err) {
         sendError('error creating Post', err, res);
     }
@@ -27,7 +27,7 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     try {
-        res.json(await postService.updatePost(req.body.post));
+        res.json(await postService.updatePost(req.body));
     } catch(err) {
         sendError('error updating Post', err, res);
     }

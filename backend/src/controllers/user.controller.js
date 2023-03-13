@@ -20,7 +20,7 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => { 
     try {
-        res.json(await userService.createUser(req.body.user));
+        res.json(await userService.createUser(req.body));
     } catch(err) {
         sendError('error creating User', err, res);
     }
@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        res.json(await userService.updateUser(req.body.user));
+        res.json(await userService.updateUser(req.body));
     } catch(err) {
         sendError('error updating User', err, res);
     }

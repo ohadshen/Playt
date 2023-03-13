@@ -35,9 +35,12 @@ app.use((req, res, next) => {
 
 import userRouter from "./routers/user.router.js";
 import postRouter from "./routers/post.router.js";
+import dailyNumberRouter from "./routers/dailyNumber.router.js";
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
+app.use("/dailyNumber", dailyNumberRouter);
+
 
 app.use('*', (req, res) => {
   res.status(404).json({

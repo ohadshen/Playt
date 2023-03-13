@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { getDailyNumber } from "../services/dailyNumber.controller.js";
+import { getDailyNumber } from "../controllers/dailyNumber.controller.js";
 
 const router = Router();
-  
+
+
 router.route("/")
     .get(getDailyNumber)
 
