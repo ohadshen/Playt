@@ -1,4 +1,4 @@
-import * as dailyNumberService from '../services/dailyNumberService.js';
+import * as dailyNumberService from '../services/dailyNumber.service.js';
 
 const getDailyNumber = async (req, res) => {
     try {
@@ -7,3 +7,5 @@ const getDailyNumber = async (req, res) => {
         sendError('error getting daily number', err, res);
     }
 }
+
+export { getDailyNumber };

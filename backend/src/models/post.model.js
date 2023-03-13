@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const PostSchema = new Schema({
+    date: {
+        type: Date,
+        required: true,
+    },
     title: {
         type: String,
         required: true,
@@ -13,7 +17,7 @@ const PostSchema = new Schema({
         type: String,
     },
     carNumber : {
-        type: Number,
+        type: Array,
         required: true,
     },
     points: {
