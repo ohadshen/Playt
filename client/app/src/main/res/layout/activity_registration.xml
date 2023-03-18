@@ -15,6 +15,30 @@
     >
 
     <!-- TextView for heading -->
+
+    <Button
+        android:id="@+id/addAvatarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="153dp"
+        android:layout_gravity="center"
+        android:layout_x="134dp"
+        android:layout_y="375dp"
+        android:background="@drawable/round_button"
+        android:onClick="chooseImage"
+        android:text="Choose Avatar" />
+
+    <ImageView
+        android:id="@+id/userImageView"
+        android:layout_width="163dp"
+        android:layout_height="161dp"
+        android:layout_gravity="center"
+        android:minWidth="100px"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="117dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +60,21 @@
         android:inputType="textPassword" />
 
     <!-- Button for register with text "Register" -->
+
+    <!-- ProgressBar for loading time -->
+    <EditText
+        android:id="@+id/nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Nickname"
+        android:inputType="textPersonName" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/btnregister"
         android:layout_width="match_parent"
@@ -52,11 +91,4 @@
         android:background="@android:color/transparent"
         android:text="GO TO LOGIN"
         android:textColor="#000000" />
-
-    <!-- ProgressBar for loading time -->
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 </LinearLayout>

@@ -11,6 +11,6 @@ const updateUser = async (updatedUser) =>
 
 const getUserByUsername = async (username) => await User.findOne({ username }).populate("posts");
 
-const createUser = async (user) => await User.create(user);
+const createUser = async (user) => await User.create({...user, posts: []});
 
 export { getAllUsers, updateUser, getUserByUsername, createUser};

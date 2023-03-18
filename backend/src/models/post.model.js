@@ -9,15 +9,11 @@ const PostSchema = new Schema({
         type: String,
         required: true,
     },
-    content: {
-        type: String,
-        required: true,
-    },
     image: {
-        type: String,
+        type: Buffer,
     },
-    carNumber : {
-        type: Array,
+    carPlate : {
+        type: String,
         required: true,
     },
     points: {

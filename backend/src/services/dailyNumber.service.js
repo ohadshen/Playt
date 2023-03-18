@@ -1,7 +1,22 @@
 
 import { DailyNumber } from "../models/dailyNumber.model.js";
 
+export const dailyNumberPoints = async () => {
+    const dailyNumber = await getDailyNumber();
+    const points = dailyNumber.reduce((acc, curr) => {
+        if (curr !== '-1') {
+            return acc += acc;
+        }
+        return acc;
+    }, 10);
+
+    return points;
+}
+
 const getDailyNumber = async () => {
+
+return ['4','-1','-1','-1','2','1','A','B']
+
     const today = new Date();
     const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
@@ -29,7 +44,7 @@ const generateNewDailyNumber = () => {
     }
 
     indexes.forEach(index => {
-        randomArray[index] = 'X';
+        randomArray[index] = '-1';
     });
 
     DailyNumber.create({ number: randomArray, date: new Date() })
