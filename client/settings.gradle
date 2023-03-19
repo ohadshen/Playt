@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Playt"
 include ':app', ':OpenALPR'
 
-project(':OpenALPR').projectDir = new File('./openalpr-android/app')
+project(':OpenALPR').projectDir = new File('./openalpr-android_playt/app')
