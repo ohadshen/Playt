@@ -174,7 +174,7 @@ public class ActivityRegistration extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                final String SERVER_URL = "http://10.0.2.2:3001/users";
+                final String SERVER_URL = Constants.SERVER_URL + "/users";
                 try {
                     // Create a new HTTP client
                     HttpClient client = new DefaultHttpClient();

@@ -14,7 +14,6 @@ export const dailyNumberPoints = async () => {
 }
 
 const getDailyNumber = async () => {
-
 return ['4','-1','-1','-1','2','1','A','B']
 
     const today = new Date();

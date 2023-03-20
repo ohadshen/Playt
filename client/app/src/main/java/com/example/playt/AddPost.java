@@ -61,13 +61,13 @@ public class AddPost extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                final String SERVER_URL = "http://10.0.2.2:3001/posts";
+                final String URL = Constants.SERVER_URL + "/posts";
                 try {
                     // Create a new HTTP client
                     HttpClient client = new DefaultHttpClient();
 
                     // Create a new HTTP request with the server URL
-                    HttpPost request = new HttpPost(SERVER_URL);
+                    HttpPost request = new HttpPost(URL);
 
                     // Set the request headers
                     request.setHeader("Content-Type", "application/json");
@@ -136,13 +136,13 @@ public class AddPost extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                final String SERVER_URL = "http://10.0.2.2:3001/dailyNumber";
+                final String URL = Constants.SERVER_URL + "/dailyNumber";
                 try {
                     // Create a new HTTP client
                     HttpClient client = new DefaultHttpClient();
 
                     // Create a new HTTP request with the server URL
-                    HttpGet request = new HttpGet(SERVER_URL);
+                    HttpGet request = new HttpGet(URL);
 
                     // Execute the request and get the response
                     HttpResponse response = client.execute(request);

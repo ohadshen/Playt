@@ -35,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                final String SERVER_URL = "http://10.0.2.2:3001/dailyNumber";
+                final String URL = Constants.SERVER_URL + "/dailyNumber";
                 try {
                     // Create a new HTTP client
                     HttpClient client = new DefaultHttpClient();
 
                     // Create a new HTTP request with the server URL
-                    HttpGet request = new HttpGet(SERVER_URL);
+                    HttpGet request = new HttpGet(URL);
 
                     // Execute the request and get the response
                     HttpResponse response = client.execute(request);
