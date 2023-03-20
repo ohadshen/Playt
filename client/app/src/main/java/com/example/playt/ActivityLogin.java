@@ -1,5 +1,6 @@
 package com.example.playt;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -32,6 +33,11 @@ public class ActivityLogin extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            SharedPreferences sharedPreferences = getSharedPreferences("user_preferences", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", user.getEmail());
+            editor.apply();
+
             // User is signed in
             Intent i = new Intent(ActivityLogin.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -119,6 +125,11 @@ public class ActivityLogin extends AppCompatActivity {
 
                                     // hide the progress bar
                                     progressbar.setVisibility(View.GONE);
+
+                                    SharedPreferences sharedPreferences = getSharedPreferences("user_preferences", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("username", email);
+                                    editor.apply();
 
                                     // if sign-in is successful
                                     // intent to home activity

@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
+    android:id="@+id/hint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".AddPost"
-    android:background="@color/background"
-    >
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:background="@drawable/card_background"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/white"
-        >
+    tools:context=".AddPost">
 
     <ImageView
         android:id="@+id/imageView"
@@ -31,5 +21,38 @@
         tools:layout_editor_absoluteX="141dp"
         tools:layout_editor_absoluteY="117dp"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/card_background"
+        android:elevation="4dp"
+        app:cardBackgroundColor="@color/white">
+
     </androidx.cardview.widget.CardView>
+
+    <EditText
+        android:id="@+id/playtTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Write a title for your playt"
+        android:inputType="textPersonName"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/uploadPlaytButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bingo! Upload Your Playt"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/tryAgainButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Try Again"
+        android:visibility="gone" />
+
 </LinearLayout>

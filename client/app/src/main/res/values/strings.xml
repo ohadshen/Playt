@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Playt</string>
+    <string name="user_preferences">user_preferences</string>
 </resources>

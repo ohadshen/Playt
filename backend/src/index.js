@@ -8,7 +8,7 @@ dotenv.config()
 
 const app = express();
 
-app.use(json());
+app.use(json({ limit: '50mb' }));
 app.use(cors());
 
 const username = process.env.MONGO_USERNAME;
