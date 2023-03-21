@@ -9,11 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -26,23 +21,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.content.Context;
 
-import com.caverock.androidsvg.SVGParseException;
-import com.example.playt.models.UserModel;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -52,25 +44,16 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import SearchPageFragment.MyItemRecyclerViewAdapter;
-import SearchPageFragment.placeholder.PlaceholderContent;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegistrationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RegistrationFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     private View viewReference;
     private EditText emailTextView, passwordTextView, nicknameTextView;
-    public ImageView userImageView;
+    private ImageView userImageView;
     private Button addAvatarButton;
     private Button signUpButton;
     private Button goToSignInButton;
     public ProgressBar progressbar;
     private FirebaseAuth mAuth;
-    public Bitmap userImageBitmap;
 
     private static final int PICK_IMAGE = 1;
 
@@ -145,67 +128,6 @@ public class RegistrationFragment extends Fragment {
         }
     }
 
-    public static void getUsersForSearch(RegistrationFragment context) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-
-
-
-                final String URL = Constants.AVATARS_API_URL + Math.random();
-
-                try {
-                    DefaultHttpClient httpClient = new DefaultHttpClient();
-                    SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
-                    socketFactory.setHostnameVerifier(SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
-                    Scheme scheme = new Scheme("https", socketFactory, 443);
-                    httpClient.getConnectionManager().getSchemeRegistry().register(scheme);
-
-                    // Create a new HTTP request with the server URL
-                    HttpGet request = new HttpGet(URL);
-
-                    // Execute the request and get the response
-                    HttpResponse response = httpClient.execute(request);
-
-                    // Get the response status code
-                    int statusCode = response.getStatusLine().getStatusCode();
-
-                    if (statusCode == 200) {
-                        // If the request was successful, get the response body
-                        HttpEntity entity = response.getEntity();
-                        String responseBody = EntityUtils.toString(entity);
-
-                        // Return the response body
-                        return responseBody;
-                    } else {
-                        // If the request failed, log an error
-                        Log.e("HTTP error", "Server returned status code: " + statusCode);
-                    }
-                } catch (IOException e) {
-                    // If an exception was thrown, log the error
-                    Log.e("HTTP error", "Error making HTTP request: " + e.getMessage());
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                try {
-                    Bitmap bitmap = utils.SvgToBitmap(result);
-
-                    context.userImageBitmap = bitmap;
-                    context.userImageView.setImageBitmap(bitmap);
-                    Log.d("HTTP response", result);
-
-                } catch (SVGParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.execute();
-    }
-
-
     public void addUser() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -228,7 +150,6 @@ public class RegistrationFragment extends Fragment {
                     // Add the image to the data as base64-encoded string
                     userImageView.setDrawingCacheEnabled(true);
                     userImageView.buildDrawingCache();
-
                     Bitmap bitmap = userImageView.getDrawingCache();
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -322,15 +243,11 @@ public class RegistrationFragment extends Fragment {
             }}.execute();
     }
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_registration, container, false);
-        getUsersForSearch(this);
         viewReference = view;
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
@@ -341,6 +258,7 @@ public class RegistrationFragment extends Fragment {
         nicknameTextView = view.findViewById(R.id.nickname);
         signUpButton = view.findViewById(R.id.btnregister);
         progressbar = view.findViewById(R.id.progressbar);
+        addAvatarButton = view.findViewById(R.id.addAvatarButton);
         userImageView = (ImageView) view.findViewById(R.id.userImageView);
 
         // Set on Click Listener on Registration button
@@ -351,6 +269,17 @@ public class RegistrationFragment extends Fragment {
                 registerNewUser();
             }
         });
+
+        // Set on Click Listener on Registration button
+        addAvatarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                chooseImage(v);
+            }
+        });
+
+
 
         goToSignInButton = view.findViewById(R.id.route_to_sign_up);
 
