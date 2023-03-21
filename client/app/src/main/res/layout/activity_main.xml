@@ -9,63 +9,11 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
-
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="292dp"
-        android:layout_y="0dp"
-        android:text="logout"
-        tools:layout_editor_absoluteX="285dp"
-        tools:layout_editor_absoluteY="68dp" />
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_margin="40dip"
-
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_x="111dp"
-            android:layout_y="198dp"
-            android:text="Daily Number"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_margin="40dip"
-
-        android:id="@+id/carDailyNumber"
-        android:layout_width="287dp"
-        android:layout_height="78dp"
-        android:layout_x="61dp"
-        android:layout_y="250dp"
-        android:background="#EFDB72"
-        android:gravity="center"
-        android:text="XX - XXX - XX"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:layout_margin="40dip"
-
-        android:id="@+id/camera_button"
-        android:layout_width="wrap_content"
-        android:layout_height="133dp"
-        android:layout_x="134dp"
-        android:layout_y="375dp"
-        android:background="@drawable/round_button"
-        android:onClick="launchCamera"
-        android:text="Open Camera" />
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_navhost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 </LinearLayout>

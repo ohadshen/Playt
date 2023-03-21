@@ -1,6 +1,6 @@
 package com.example.playt;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static android.app.Activity.RESULT_OK;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,24 +11,21 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.google.gson.Gson;
-
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Type;
-
-//import org.openalpr.OpenALPR;
-//import org.openalpr.model.Candidate;
-//import org.openalpr.model.Coordinate;
-//import org.openalpr.model.Result;
-//import org.openalpr.model.Results;
-//import org.openalpr.model.ResultsError;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,26 +38,30 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
-public class AddPost extends AppCompatActivity {
+
+public class AddPostFragment extends Fragment {
+
     private ImageView imageView;
     private String carPlate;
     private SharedPreferences sharedPreferences;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences("user_preferences", Context.MODE_PRIVATE);
-
-
-        setContentView(R.layout.activity_add_post);
-
-        chooseImage();
-    }
-
+    private View viewReference;
     public void addPost() {
         new AsyncTask<Void, Void, String>() {
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    Navigation.findNavController(requireActivity(), R.id.main_navhost)
+                            .navigate(R.id.action_addPostFragment_to_homePageFragment2);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             @Override
             protected String doInBackground(Void... params) {
                 final String URL = Constants.SERVER_URL + "/posts";
@@ -89,7 +90,7 @@ public class AddPost extends AppCompatActivity {
                     data.put("image", base64Image);
 
                     // Add the text to the data
-                    EditText editText = findViewById(R.id.playtTitleText);
+                    EditText editText = viewReference.findViewById(R.id.playtTitleText);
                     String text = editText.getText().toString();
                     data.put("title", text);
 
@@ -112,10 +113,6 @@ public class AddPost extends AppCompatActivity {
                         HttpEntity responseEntity = response.getEntity();
                         String responseBody = EntityUtils.toString(responseEntity);
 
-                        // User is signed in
-                        Intent i = new Intent(AddPost.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
 
                         // Return the response body
                         return responseBody;
@@ -130,7 +127,7 @@ public class AddPost extends AppCompatActivity {
 
                 return null;
 
-        }}.execute();
+            }}.execute();
     }
 
 
@@ -203,7 +200,7 @@ public class AddPost extends AppCompatActivity {
                 // Do something with the response body
 
                 if(isPlateValid(plate, arr)) {
-                    Button uploadPlaytButton = findViewById(R.id.uploadPlaytButton);
+                    Button uploadPlaytButton = viewReference.findViewById(R.id.uploadPlaytButton);
                     uploadPlaytButton.setVisibility(View.VISIBLE);
 
                     uploadPlaytButton.setOnClickListener(new View.OnClickListener() {
@@ -214,21 +211,22 @@ public class AddPost extends AppCompatActivity {
                         }
                     });
 
-                    EditText playtTitleText = findViewById(R.id.playtTitleText);
+                    EditText playtTitleText = viewReference.findViewById(R.id.playtTitleText);
                     playtTitleText.setVisibility(View.VISIBLE);
                 } else {
-                    Button tryAgainButton = findViewById(R.id.tryAgainButton);
+                    Button tryAgainButton = viewReference.findViewById(R.id.tryAgainButton);
                     tryAgainButton.setVisibility(View.VISIBLE);
                     // create an onclick event
 
                     tryAgainButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent
-                                    = new Intent(AddPost.this,
-                                    MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            // todo: go to homepage
+//                            Intent intent
+//                                    = new Intent(AddPost.this,
+//                                    MainActivity.class);
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
                         }
                     });
                 }
@@ -243,7 +241,7 @@ public class AddPost extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
 
     private void chooseImage() {
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = (ImageView) viewReference.findViewById(R.id.imageView);
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
@@ -268,7 +266,7 @@ public class AddPost extends AppCompatActivity {
     }
 
     private String getPlateByALPR(String imagePath) {
-        final String ANDROID_DATA_DIR = this.getApplicationInfo().dataDir;
+        final String ANDROID_DATA_DIR = getContext().getApplicationInfo().dataDir;
         final String openAlprConfFile = ANDROID_DATA_DIR + File.separatorChar + "runtime_data" + File.separatorChar + "openalpr.conf";
 
         try {
@@ -309,7 +307,7 @@ public class AddPost extends AppCompatActivity {
                 }
 
 
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), uri);
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -317,5 +315,17 @@ public class AddPost extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        viewReference = view;
+        sharedPreferences = requireActivity().getSharedPreferences("user_preferences", Context.MODE_PRIVATE);
+        chooseImage();
+
+        return view;
     }
 }
