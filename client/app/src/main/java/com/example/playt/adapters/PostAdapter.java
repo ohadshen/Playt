@@ -35,32 +35,42 @@ import java.util.ArrayList;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
     private ArrayList<PostModel> posts;
+    protected boolean isEditable;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         PostModel post;
+        boolean isEditable;
+        TextView textViewTitle;
         EditText editTextTitle;
         ImageView imageViewImage;
         TextView textViewCarNumber;
         TextView textViewPoints;
         TextView textViewDate;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView, boolean isEditable) {
             super(itemView);
-            this.editTextTitle = (EditText) itemView.findViewById(R.id.editTextTitle);
+            this.isEditable = isEditable;
             this.imageViewImage = (ImageView) itemView.findViewById(R.id.imageView);
             this.textViewCarNumber = (TextView) itemView.findViewById(R.id.textViewCarNumber);
             this.textViewPoints = (TextView) itemView.findViewById(R.id.textViewPoints);
             this.textViewDate = (TextView) itemView.findViewById(R.id.textViewDate);
 
-            editTextTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    if (!hasFocus) {
-                        EditText editText = (EditText) view;
-                        updateTitle(String.valueOf(editText.getText()));
+            if (!isEditable) {
+                this.textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
+                this.textViewTitle.setVisibility(View.VISIBLE);
+            } else {
+                this.editTextTitle = (EditText) itemView.findViewById(R.id.editTextTitle);
+                this.editTextTitle.setVisibility(View.VISIBLE);
+                editTextTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        if (!hasFocus) {
+                            EditText editText = (EditText) view;
+                            updateTitle(String.valueOf(editText.getText()));
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         private void updateTitle(String newTitle) {
@@ -79,7 +89,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                         Gson gson = new Gson();
                         post.setTitle(newTitle);
                         StringEntity entity = new StringEntity(gson.toJson(post));
-                        System.out.println(gson.toJson(post));
                         request.setEntity(entity);
 
                         // Execute the request and get the response
@@ -92,7 +101,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                             // If the request was successful, get the response body
                             HttpEntity entityResponse = response.getEntity();
                             String responseBody = EntityUtils.toString(entityResponse);
-                            System.out.println(responseBody);
 
                             // Return the response body
                             return responseBody;
@@ -111,8 +119,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         }
     }
 
-    public PostAdapter(ArrayList<PostModel> posts) {
+    public PostAdapter(ArrayList<PostModel> posts, boolean isEditable) {
         this.posts = posts;
+        this.isEditable = isEditable;
     }
 
     @Override
@@ -121,13 +130,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_profile_card, parent, false);
 
-        MyViewHolder myViewHolder = new MyViewHolder(view);
+        MyViewHolder myViewHolder = new MyViewHolder(view, isEditable);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int index) {
-        EditText editTextTitle = holder.editTextTitle;
+        holder.post = posts.get(index);
+
+        if (!isEditable) {
+            TextView textViewTitle = holder.textViewTitle;
+            textViewTitle.setText(posts.get(index).getTitle());
+        } else {
+            EditText editTextTitle = holder.editTextTitle;
+            editTextTitle.setText(posts.get(index).getTitle());
+        }
+
         ImageView imageViewImage = holder.imageViewImage;
         TextView textViewCarNumber = holder.textViewCarNumber;
         TextView textViewPoints = holder.textViewPoints;
@@ -135,8 +153,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         byte[] bufferImage = Base64.decode(posts.get(index).getImage().data, Base64.DEFAULT);
 
-        holder.post = posts.get(index);
-        editTextTitle.setText(posts.get(index).getTitle());
+
+
         imageViewImage.setImageBitmap(BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length));
         imageViewImage.setBackgroundColor(Color.rgb(100, 100, 100));
         textViewCarNumber.setText(posts.get(index).getCarPlate());

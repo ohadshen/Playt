@@ -63,6 +63,10 @@ public class ActivityProfilePage extends AppCompatActivity {
         getUser();
     }
 
+    private boolean isCurrentUser() {
+        return false;
+    }
+
     public void getUser() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -105,7 +109,7 @@ public class ActivityProfilePage extends AppCompatActivity {
                 UserModel user = new Gson().fromJson(result, UserModel.class);
                 Collections.addAll(posts, user.getPosts());
 
-                adapter = new PostAdapter(posts);
+                adapter = new PostAdapter(posts, isCurrentUser());
                 recyclerView.setAdapter(adapter);
 
                 byte[] bufferImage = Base64.decode(user.getImage().data, Base64.DEFAULT);
