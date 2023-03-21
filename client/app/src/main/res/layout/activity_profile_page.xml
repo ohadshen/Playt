@@ -1,13 +1,14 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
-
     <LinearLayout
-
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,11 +18,12 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="282dp"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             android:background="@drawable/card_background"
             android:elevation="4dp"
+            android:outlineProvider="none"
             app:cardBackgroundColor="@color/background">
 
             <TextView
@@ -30,15 +32,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Nickname"
+                android:text="Loading..."
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <TextView
+                android:id="@+id/textViewProfilePoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="43dp"
+                android:textSize="18dp"
+                android:textColor="#808080"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="180dp"
-                android:layout_height="168dp"
+                android:id="@+id/imageViewProfile"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
                 android:minWidth="100px"
                 android:scaleType="centerCrop"
@@ -49,9 +62,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_posts"
+        android:nestedScrollingEnabled="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -61,3 +74,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

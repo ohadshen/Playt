@@ -60,9 +60,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         TextView textViewPoints = holder.textViewPoints;
         TextView textViewDate = holder.textViewDate;
 
-        //String base64 = Base64.encodeToString(posts.get(index).getImage().data, Base64.DEFAULT);
         byte[] bufferImage = Base64.decode(posts.get(index).getImage().data, Base64.DEFAULT);
-        System.out.println(BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length));
 
         textViewTitle.setText(posts.get(index).getTitle());
         imageViewImage.setImageBitmap(BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length));

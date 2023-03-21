@@ -2,9 +2,13 @@ package com.example.playt;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -32,6 +36,9 @@ public class ActivityProfilePage extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
     private static ArrayList<PostModel> posts;
+    private static TextView textViewNickname;
+    private static TextView textViewProfilePoints;
+    private static ImageView imageViewProfile;
     private String username;
 
     @Override
@@ -49,22 +56,11 @@ public class ActivityProfilePage extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        textViewNickname = (TextView) findViewById(R.id.textViewNickname);
+        textViewProfilePoints = (TextView) findViewById(R.id.textViewProfilePoints);
+        imageViewProfile = (ImageView) findViewById(R.id.imageViewProfile);
         posts = new ArrayList<PostModel>();
-//        for (int i = 0; i < 2; i++) {
-//            posts.add(new PostModel(
-//                    "title",
-//                    1111,
-//                    new String[]{"1", "1", "1"},
-//                    i,
-//                    "my content",
-//                    new Date()
-//            ));
-//        }
         getUser();
-//
-//        adapter = new PostAdapter(posts);
-//        recyclerView.setAdapter(adapter);
-//
     }
 
     public void getUser() {
@@ -107,15 +103,27 @@ public class ActivityProfilePage extends AppCompatActivity {
             @Override
             protected void onPostExecute(String result) {
                 UserModel user = new Gson().fromJson(result, UserModel.class);
-                System.out.println(user.getPosts()[0].getCarPlate());
                 Collections.addAll(posts, user.getPosts());
 
                 adapter = new PostAdapter(posts);
                 recyclerView.setAdapter(adapter);
 
-                layoutManager = new LinearLayoutManager(ActivityProfilePage.this);
-                recyclerView.setLayoutManager(layoutManager);
+                byte[] bufferImage = Base64.decode(user.getImage().data, Base64.DEFAULT);
+                System.out.println(BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length));
+
+                textViewNickname.setText(user.getNickname() + " Profile");
+                textViewProfilePoints.setText(getProfilePoints() + " Points");
+                imageViewProfile.setImageBitmap(BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length));
             }
         }.execute();
+    }
+
+    private int getProfilePoints() {
+        int sum = 0;
+        for (PostModel post : posts) {
+            sum += post.getPoints();
+        }
+
+        return sum;
     }
 }
