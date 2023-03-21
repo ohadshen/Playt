@@ -1,4 +1,5 @@
 import * as postService from "../services/post.service.js";
+import { addPostToUser } from "../services/user.service.js";
 import { sendError } from "../shared/errorHandler.js";
 
 const getAllPosts = async (req, res) => {
@@ -19,7 +20,10 @@ const getPostById = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        res.json(await postService.createPost(req.body));
+        const post = await postService.createPost(req.body);
+        await addPostToUser(req.body.username, post.id);
+        
+        res.json(post);
     } catch(err) {
         sendError('error creating Post', err, res);
     }

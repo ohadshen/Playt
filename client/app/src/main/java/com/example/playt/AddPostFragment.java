@@ -2,9 +2,11 @@ package com.example.playt;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -246,6 +248,23 @@ public class AddPostFragment extends Fragment {
         startActivityForResult(intent, PICK_IMAGE);
     }
 
+    @SuppressLint("Range")
+    public static String getImageFilePath(Context context, Uri uri) {
+        String path = null;
+        Cursor cursor = null;
+
+        try {
+            cursor = context.getContentResolver().query(uri, new String[] { MediaStore.Images.Media.DATA }, null, null, null);
+            cursor.moveToFirst();
+
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        } finally {
+            cursor.close();
+        }
+
+        return path;
+    }
+
     private String getPlateByALPR(String imagePath) {
         final String ANDROID_DATA_DIR = getContext().getApplicationInfo().dataDir;
         final String openAlprConfFile = ANDROID_DATA_DIR + File.separatorChar + "runtime_data" + File.separatorChar + "openalpr.conf";
@@ -270,7 +289,8 @@ public class AddPostFragment extends Fragment {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
-                String imagePath = data.getData().getLastPathSegment();
+                //String imagePath = getImageFilePath(AddPost.this, uri);
+                String imagePath = "";
                 String carPlate = getPlateByALPR(imagePath);
 
                 if (carPlate != null) {

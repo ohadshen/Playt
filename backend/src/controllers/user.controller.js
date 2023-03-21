@@ -10,9 +10,9 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const getUserById = async (req, res) => {
+const getUserByUsername = async (req, res) => {
     try {
-        res.json(await userService.getUserById(req.params.id));
+        res.json(await userService.getUserByUsername(req.params.id));
     } catch(err) {
         sendError('error get User by ID', err, res);
     }
@@ -35,6 +35,6 @@ const updateUser = async (req, res) => {
 }
 
 export { getAllUsers,
-        getUserById,    
+    getUserByUsername,    
         createUser,
         updateUser };
