@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_homePageFragment2_to_itemFragment2"
             app:destination="@id/itemFragment2" />
+        <action
+            android:id="@+id/action_homePageFragment2_to_profilePageFragment"
+            app:destination="@id/profilePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -51,4 +54,8 @@
         android:name="SearchPageFragment.ItemFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/profilePageFragment"
+        android:name="com.example.playt.ProfilePageFragment"
+        android:label="ProfilePageFragment" />
 </navigation>

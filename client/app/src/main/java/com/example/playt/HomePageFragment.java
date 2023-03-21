@@ -30,6 +30,7 @@ public class HomePageFragment extends Fragment {
     private Button cameraButton;
     private Button logOutButton;
     private Button searchPageButton;
+    private Button profilePageButton;
     private TextView carDailyNumber;
     private String currentPhotoPath;
     private String[] dailyPattern;
@@ -119,6 +120,7 @@ public class HomePageFragment extends Fragment {
         carDailyNumber = view.findViewById(R.id.carDailyNumber);
         cameraButton = view.findViewById(R.id.camera_button);
         searchPageButton = view.findViewById(R.id.searchBtn);
+        profilePageButton = view.findViewById(R.id.profilePageBtn);
 
         // Set on Click Listener on Sign-in button
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -144,21 +146,23 @@ public class HomePageFragment extends Fragment {
             }
         });
 
-
         // Set on Click Listener on Sign-in button
-        logOutButton.setOnClickListener(new View.OnClickListener() {
+        profilePageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
 
                 try {
                     Navigation.findNavController(requireActivity(), R.id.main_navhost)
-                            .navigate(R.id.action_homePageFragment2_to_loginFragment2);
+                            .navigate(R.id.action_homePageFragment2_to_profilePageFragment);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
+
+
 
         return view;
     }

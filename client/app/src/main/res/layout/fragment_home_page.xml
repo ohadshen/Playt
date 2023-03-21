@@ -35,6 +35,17 @@
             tools:layout_editor_absoluteY="68dp"
             android:layout_marginHorizontal="5dp"
             />
+        <Button
+            android:id="@+id/profilePageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="292dp"
+            android:layout_y="0dp"
+            android:text="profile page"
+            tools:layout_editor_absoluteX="285dp"
+            tools:layout_editor_absoluteY="68dp"
+            android:layout_marginHorizontal="5dp"
+            />
 
     </LinearLayout>
 
