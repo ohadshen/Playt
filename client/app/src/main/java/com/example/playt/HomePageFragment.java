@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,13 +23,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 public class HomePageFragment extends Fragment {
     private static final int REQUEST_CAMERA_PERMISSION = 101;
 
-    private Button logOutButton;
     private Button cameraButton;
+    private Button logOutButton;
+    private Button searchPageButton;
     private TextView carDailyNumber;
     private String currentPhotoPath;
     private String[] dailyPattern;
@@ -72,11 +71,7 @@ public class HomePageFragment extends Fragment {
                 return null;
             }
 
-            String[] stringToArray(String stringArray) {
-                Gson gson = new Gson();
-                Type type = com.google.gson.internal.$Gson$Types.arrayOf(String.class);
-                return gson.fromJson(stringArray, type);
-            }
+
 
 
             private String dailyPatternForDisplay(String[] dailyPattern) {
@@ -95,7 +90,7 @@ public class HomePageFragment extends Fragment {
             @Override
             protected void onPostExecute(String result) {
                 // Do something with the response body
-                dailyPattern = stringToArray(result);
+                dailyPattern = utils.stringToStringArray(result);
                 carDailyNumber.setText(dailyPatternForDisplay(dailyPattern));
 
                 Log.d("HTTP response", result);
@@ -123,6 +118,7 @@ public class HomePageFragment extends Fragment {
         logOutButton = view.findViewById(R.id.logoutBtn);
         carDailyNumber = view.findViewById(R.id.carDailyNumber);
         cameraButton = view.findViewById(R.id.camera_button);
+        searchPageButton = view.findViewById(R.id.searchBtn);
 
         // Set on Click Listener on Sign-in button
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +127,23 @@ public class HomePageFragment extends Fragment {
                 launchCamera(v);
             }
         });
+
+
+        // Set on Click Listener on Sign-in button
+        searchPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+
+                try {
+                    Navigation.findNavController(requireActivity(), R.id.main_navhost)
+                            .navigate(R.id.action_homePageFragment2_to_itemFragment2);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         // Set on Click Listener on Sign-in button
         logOutButton.setOnClickListener(new View.OnClickListener() {

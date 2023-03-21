@@ -9,15 +9,36 @@
     android:gravity="center"
     tools:context=".HomePageFragment">
 
-    <Button
-        android:id="@+id/logoutBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="292dp"
-        android:layout_y="0dp"
-        android:text="logout"
-        tools:layout_editor_absoluteX="285dp"
-        tools:layout_editor_absoluteY="68dp" />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="292dp"
+            android:layout_y="0dp"
+            android:text="logout"
+            tools:layout_editor_absoluteX="285dp"
+            tools:layout_editor_absoluteY="68dp"
+            android:layout_marginHorizontal="5dp"
+            />
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_x="292dp"
+            android:layout_y="0dp"
+            android:text="search page"
+            tools:layout_editor_absoluteX="285dp"
+            tools:layout_editor_absoluteY="68dp"
+            android:layout_marginHorizontal="5dp"
+            />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_height="wrap_content"

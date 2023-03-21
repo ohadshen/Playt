@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_homePageFragment2_to_addPostFragment"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_homePageFragment2_to_itemFragment2"
+            app:destination="@id/itemFragment2" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -43,4 +46,9 @@
             android:id="@+id/action_addPostFragment_to_homePageFragment2"
             app:destination="@id/homePageFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/itemFragment2"
+        android:name="SearchPageFragment.ItemFragment"
+        android:label="fragment_item_list"
+        tools:layout="@layout/fragment_item_list" />
 </navigation>
