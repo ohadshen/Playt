@@ -24,7 +24,6 @@
         android:layout_x="134dp"
         android:layout_y="375dp"
         android:background="@drawable/round_button"
-        android:onClick="chooseImage"
         android:text="Choose Avatar" />
 
     <ImageView
