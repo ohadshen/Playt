@@ -2,7 +2,6 @@ package com.example.playt;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -51,18 +50,18 @@ public class ProfilePageFragment extends Fragment {
     private static TextView textViewNickname;
     private static TextView textViewProfilePoints;
     private static ImageView imageViewProfile;
-    private String username;
-
+    private String profileUsername;
+    private String currentUsername;
 
     private boolean isCurrentUser() {
-        return false;
+        return currentUsername == profileUsername;
     }
 
     public void getUser() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                final String URL = Constants.SERVER_URL + "/users/" + username;
+                final String URL = Constants.SERVER_URL + "/users/" + profileUsername;
                 try {
                     // Create a new HTTP client
                     HttpClient client = new DefaultHttpClient();
@@ -99,7 +98,6 @@ public class ProfilePageFragment extends Fragment {
             protected void onPostExecute(String result) {
                 UserModel user = new Gson().fromJson(result, UserModel.class);
                 Collections.addAll(posts, user.getPosts());
-
                 adapter = new PostAdapter(posts, isCurrentUser());
                 recyclerView.setAdapter(adapter);
 
@@ -125,13 +123,16 @@ public class ProfilePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user_preferences", MODE_PRIVATE);
 
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
+        currentUsername = sharedPreferences.getString("username", "");
 
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile_page, container, false);
 
-        username = sharedPreferences.getString("username", "");
+        ProfilePageFragmentArgs args = ProfilePageFragmentArgs.fromBundle(getArguments());
+
+        profileUsername = args.getProfileUsername();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_posts);
         recyclerView.setHasFixedSize(true);

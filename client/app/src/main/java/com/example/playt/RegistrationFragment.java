@@ -26,15 +26,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.content.Context;
 
 import com.caverock.androidsvg.SVGParseException;
-import com.example.playt.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,14 +49,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import SearchPageFragment.MyItemRecyclerViewAdapter;
-import SearchPageFragment.placeholder.PlaceholderContent;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegistrationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegistrationFragment extends Fragment {
 
     private View viewReference;
@@ -276,9 +265,11 @@ public class RegistrationFragment extends Fragment {
                                             // hide the progress bar
                                             progressbar.setVisibility(View.GONE);
 
-                                            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_preferences", MODE_PRIVATE);
+                                            SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user_preferences", MODE_PRIVATE);
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
                                             editor.putString("username", email);
+                                            editor.putString("nickname", nickname);
+                                            editor.putString("image", base64Image);
                                             editor.apply();
 
                                             // if the user created intent to login activity
@@ -339,7 +330,7 @@ public class RegistrationFragment extends Fragment {
         emailTextView = view.findViewById(R.id.email);
         passwordTextView = view.findViewById(R.id.passwd);
         nicknameTextView = view.findViewById(R.id.nickname);
-        signUpButton = view.findViewById(R.id.btnregister);
+        signUpButton = view.findViewById(R.id.btnupdateuser);
         progressbar = view.findViewById(R.id.progressbar);
         userImageView = (ImageView) view.findViewById(R.id.userImageView);
 

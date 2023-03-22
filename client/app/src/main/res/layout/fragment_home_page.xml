@@ -13,39 +13,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+
         <Button
-            android:id="@+id/logoutBtn"
+            android:id="@+id/posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_x="292dp"
             android:layout_y="0dp"
-            android:text="logout"
+            android:text="my posts"
             tools:layout_editor_absoluteX="285dp"
-            tools:layout_editor_absoluteY="68dp"
-            android:layout_marginHorizontal="5dp"
-            />
+            tools:layout_editor_absoluteY="68dp" />
+
         <Button
             android:id="@+id/searchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_x="292dp"
             android:layout_y="0dp"
-            android:text="search page"
+            android:text="explore"
             tools:layout_editor_absoluteX="285dp"
-            tools:layout_editor_absoluteY="68dp"
-            android:layout_marginHorizontal="5dp"
-            />
+            tools:layout_editor_absoluteY="68dp" />
+
         <Button
-            android:id="@+id/profilePageBtn"
+            android:id="@+id/editProfileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_x="292dp"
             android:layout_y="0dp"
-            android:text="profile page"
+            android:text="profile"
             tools:layout_editor_absoluteX="285dp"
-            tools:layout_editor_absoluteY="68dp"
-            android:layout_marginHorizontal="5dp"
-            />
+            tools:layout_editor_absoluteY="68dp" />
 
     </LinearLayout>
 
@@ -97,5 +98,16 @@
         android:layout_y="375dp"
         android:background="@drawable/round_button"
         android:text="Open Camera" />
+
+    <Button
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_x="292dp"
+        android:layout_y="0dp"
+        android:text="logout"
+        tools:layout_editor_absoluteX="285dp"
+        tools:layout_editor_absoluteY="68dp" />
 
 </LinearLayout>

@@ -64,7 +64,7 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/btnregister"
+        android:id="@+id/btnupdateuser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"

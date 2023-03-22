@@ -31,7 +31,14 @@
             app:destination="@id/itemFragment2" />
         <action
             android:id="@+id/action_homePageFragment2_to_profilePageFragment"
-            app:destination="@id/profilePageFragment" />
+            app:destination="@id/profilePageFragment"
+            />
+        <action
+            android:id="@+id/action_homePageFragment2_self"
+            app:destination="@id/homePageFragment2" />
+        <action
+            android:id="@+id/action_homePageFragment2_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -53,9 +60,21 @@
         android:id="@+id/itemFragment2"
         android:name="SearchPageFragment.ItemFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_item_list" >
+        <action
+            android:id="@+id/action_itemFragment2_to_profilePageFragment"
+            app:destination="@id/profilePageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profilePageFragment"
         android:name="com.example.playt.ProfilePageFragment"
-        android:label="ProfilePageFragment" />
+        android:label="ProfilePageFragment" >
+        <argument
+            android:name="profileUsername"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.playt.EditProfileFragment"
+        android:label="EditProfileFragment" />
 </navigation>

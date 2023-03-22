@@ -2,16 +2,16 @@ package com.example.playt;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +20,22 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.playt.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 public class LoginFragment extends Fragment {
 
@@ -35,6 +46,59 @@ public class LoginFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private SharedPreferences sharedPreferences;
+
+
+    public void getUser() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                final String URL = Constants.SERVER_URL + "/users/" + sharedPreferences.getString("username", null);
+                try {
+                    // Create a new HTTP client
+                    HttpClient client = new DefaultHttpClient();
+
+                    // Create a new HTTP request with the server URL
+                    HttpGet request = new HttpGet(URL);
+
+                    // Execute the request and get the response
+                    HttpResponse response = client.execute(request);
+
+                    // Get the response status code
+                    int statusCode = response.getStatusLine().getStatusCode();
+
+                    if (statusCode == 200) {
+                        // If the request was successful, get the response body
+                        HttpEntity entity = response.getEntity();
+                        String responseBody = EntityUtils.toString(entity);
+
+                        // Return the response body
+                        return responseBody;
+                    } else {
+                        // If the request failed, log an error
+                        Log.e("HTTP error", "Server returned status code: " + statusCode);
+                    }
+                } catch (IOException e) {
+                    // If an exception was thrown, log the error
+                    Log.e("HTTP error", "Error making HTTP request: " + e.getMessage());
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                UserModel user = new Gson().fromJson(result, UserModel.class);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("nickname", user.getNickname());
+                System.out.println(utils.stringToBitmap(utils.bitmapToString(utils.ImageBufferToBitmap(user.getImage()))));
+                editor.putString("profilePicture", utils.bitmapToString(utils.ImageBufferToBitmap(user.getImage())));
+                editor.apply();
+
+
+            }
+        }.execute();
+    }
+
     private void loginUserAccount(View view)
     {
 
@@ -45,7 +109,7 @@ public class LoginFragment extends Fragment {
         String email, password;
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
-        sharedPreferences = requireActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("user_preferences", MODE_PRIVATE);
 
         // validations for input email and password
         if (TextUtils.isEmpty(email)) {
@@ -85,13 +149,8 @@ public class LoginFragment extends Fragment {
                                     editor.putString("username", email);
                                     editor.apply();
 
-                                    // if sign-in is successful
-                                    // intent to home activity
-                                    //todo navigate to main activity
-//                                    Intent intent
-//                                            = new Intent(ActivityLogin.this,
-//                                            MainActivity.class);
-//                                    startActivity(intent);
+                                    getUser();
+
                                     try {
 
                                         Navigation.findNavController(view)
@@ -120,14 +179,16 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
+        sharedPreferences = requireContext().getSharedPreferences("user_preferences", MODE_PRIVATE);
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            sharedPreferences = requireActivity().getSharedPreferences("my_prefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", user.getEmail());
             editor.apply();
+
+            getUser();
 
             try {
                 Navigation.findNavController(requireActivity(), R.id.main_navhost)
@@ -135,13 +196,8 @@ public class LoginFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//                    .navigate(R.id.action_loginFragment2_to_homePageFragment2);
-            // todo: navigate to main activity
-            // User is signed in
-//            Intent i = new Intent(ActivityLogin.this, MainActivity.class);
-//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(i);
         }
+
         // taking instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
