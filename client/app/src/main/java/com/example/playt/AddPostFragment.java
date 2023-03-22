@@ -323,7 +323,7 @@ public class AddPostFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_post, container, false);
         viewReference = view;
-        sharedPreferences = requireActivity().getSharedPreferences("user_preferences", Context.MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("user_preferences", Context.MODE_PRIVATE);
         chooseImage();
 
         return view;

@@ -1,5 +1,8 @@
 package com.example.playt;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -29,12 +32,13 @@ public class HomePageFragment extends Fragment {
 
     private Button cameraButton;
     private Button logOutButton;
+    private Button postsButton;
     private Button searchPageButton;
-    private Button profilePageButton;
+    private Button editProfileButton;
     private TextView carDailyNumber;
     private String currentPhotoPath;
     private String[] dailyPattern;
-
+    SharedPreferences sharedPreferences;
     public void getDailyPattern() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -108,7 +112,6 @@ public class HomePageFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,8 +123,10 @@ public class HomePageFragment extends Fragment {
         carDailyNumber = view.findViewById(R.id.carDailyNumber);
         cameraButton = view.findViewById(R.id.camera_button);
         searchPageButton = view.findViewById(R.id.searchBtn);
-        profilePageButton = view.findViewById(R.id.profilePageBtn);
+        postsButton = view.findViewById(R.id.posts);
+        editProfileButton = view.findViewById(R.id.editProfileBtn);
 
+        sharedPreferences = requireContext().getSharedPreferences("user_preferences", MODE_PRIVATE);
         // Set on Click Listener on Sign-in button
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,20 +151,50 @@ public class HomePageFragment extends Fragment {
             }
         });
 
-        // Set on Click Listener on Sign-in button
-        profilePageButton.setOnClickListener(new View.OnClickListener() {
+        logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
 
                 try {
                     Navigation.findNavController(requireActivity(), R.id.main_navhost)
-                            .navigate(R.id.action_homePageFragment2_to_profilePageFragment);
+                            .navigate(R.id.action_homePageFragment2_to_loginFragment2);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
+
+        // Set on Click Listener on Sign-in button
+        postsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    HomePageFragmentDirections.ActionHomePageFragment2ToProfilePageFragment action =
+                            HomePageFragmentDirections.actionHomePageFragment2ToProfilePageFragment(sharedPreferences.getString("username", ""));
+
+                    Navigation.findNavController(requireActivity(), R.id.main_navhost)
+                            .navigate(action);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Navigation.findNavController(requireActivity(), R.id.main_navhost)
+                            .navigate(R.id.action_homePageFragment2_to_editProfileFragment);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
 
 

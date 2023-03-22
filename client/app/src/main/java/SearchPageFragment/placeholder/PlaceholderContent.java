@@ -1,5 +1,6 @@
 package SearchPageFragment.placeholder;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -41,10 +42,8 @@ public class PlaceholderContent {
      */
     public static final List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
     public static final List<PlaceholderItem> FILTERED_ITEMS = new ArrayList<PlaceholderItem>();
-
     public static RecyclerView recyclerView = null;
-
-
+    public static Activity activity;
 
     public static void getUsersForSearch() {
         new AsyncTask<Void, Void, String>() {
@@ -93,7 +92,7 @@ public class PlaceholderContent {
                     addItem(createPlaceholderItem(users[i]));
                 }
 
-                PlaceholderContent.recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
+                PlaceholderContent.recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS,activity ));
 
                 Log.d("HTTP response", users.toString());
 
@@ -119,7 +118,7 @@ public class PlaceholderContent {
     }
 
     private static PlaceholderItem createPlaceholderItem(UserModel user) {
-        return new PlaceholderItem(String.valueOf(user.get_id()),  user.getNickname(), utils.ImageBufferToBitmap(user.getImage()));
+        return new PlaceholderItem(String.valueOf(user.get_id()),  user.getNickname(), utils.ImageBufferToBitmap(user.getImage()), user.getUsername());
     }
 
     public static void setItems(RecyclerView recyclerView) {
@@ -135,10 +134,14 @@ public class PlaceholderContent {
         public final String nickname;
         public final Bitmap image;
 
-        public PlaceholderItem(String id, String nickname, Bitmap image) {
+        public final String username;
+
+
+        public PlaceholderItem(String id, String nickname, Bitmap image, String username) {
             this.id = id;
             this.nickname = nickname;
             this.image = image;
+            this.username = username;
         }
 
         @Override

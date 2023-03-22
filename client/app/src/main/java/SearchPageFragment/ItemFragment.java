@@ -36,9 +36,7 @@ public class ItemFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
-
-    }
+    public ItemFragment() {}
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
@@ -74,7 +72,7 @@ public class ItemFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-
+            PlaceholderContent.activity = requireActivity();
             PlaceholderContent.setItems(recyclerView);
 
         }

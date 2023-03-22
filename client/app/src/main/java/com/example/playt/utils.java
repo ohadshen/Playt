@@ -9,6 +9,7 @@ import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 import com.example.playt.models.ImageBuffer;
 import com.google.gson.Gson;
+import java.io.ByteArrayOutputStream;
 
 import java.lang.reflect.Type;
 
@@ -18,6 +19,8 @@ public class utils {
         Type type = com.google.gson.internal.$Gson$Types.arrayOf(String.class);
         return gson.fromJson(stringArray, type);
     }
+
+
 
     public static Bitmap ImageBufferToBitmap (ImageBuffer imageBuffer) {
         byte[] bufferImage = Base64.decode(imageBuffer.data, Base64.DEFAULT);
@@ -34,4 +37,18 @@ public class utils {
 
         return bitmap;
     }
+
+
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static Bitmap stringToBitmap(String string) {
+        byte[] bufferImage = Base64.decode(string, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bufferImage, 0, bufferImage.length);
+    }
+
 }
